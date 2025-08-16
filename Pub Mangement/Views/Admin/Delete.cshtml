@@ -1,0 +1,10 @@
+﻿@model Pub_Mangement.Models.MenuItem
+@{
+    ViewData["Title"] = "Delete Item";
+}
+<h2>Delete</h2>
+<div class="alert alert-warning">Are you sure you want to delete <strong>@Model.Name</strong>?</div>
+<form asp-action="DeleteConfirmed" asp-route-id="@Model.MenuItemId" method="post">
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>

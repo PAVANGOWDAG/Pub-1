@@ -1,0 +1,17 @@
+﻿@model Pub_Mangement.Models.MenuItem
+@{
+    ViewData["Title"] = "Edit Menu Item";
+}
+<h2>@ViewData["Title"]</h2>
+<hr />
+<form asp-action="Edit" asp-route-id="@Model.MenuItemId" method="post" class="card card-body shadow-sm">
+    <input type="hidden" asp-for="MenuItemId" />
+    <partial name="_Form" />
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

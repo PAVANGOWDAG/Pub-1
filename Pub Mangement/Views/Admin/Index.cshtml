@@ -1,0 +1,88 @@
+﻿@using Pub_Mangement.Models
+@model IEnumerable<MenuItem>
+@{
+    ViewData["Title"] = "Admin – Menu";
+}
+
+<h2>Menu Management</h2>
+
+<partial name="_Alerts" />
+
+<form method="get" class="row mb-3">
+    <div class="col-md-4">
+        <input type="text" name="q" value="@ViewBag.Query" class="form-control" placeholder="Search by name" />
+    </div>
+    <div class="col-md-3">
+        <select name="category" class="form-select me-2">
+            <option value="">All Categories</option>
+            @foreach (Enums.MenuCategory cat in Enum.GetValues(typeof(Enums.MenuCategory)))
+            {
+                if (ViewBag.Category != null && ViewBag.Category.ToString() == cat.ToString())
+                {
+                    <option value="@cat" selected="selected">@cat</option>
+                }
+                else
+                {
+                    <option value="@cat">@cat</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+    <div class="col-md-3 text-end">
+        <a asp-action="Create" class="btn btn-success">+ Add Item</a>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th class="text-end">Price</th>
+            <th style="width:150px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="4" class="text-center">No items found.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Category</td>
+                    <td class="text-end">@item.Price.ToString("C")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.MenuItemId" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.MenuItemId" class="btn btn-sm btn-info">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.MenuItemId" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@if ((int)ViewBag.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (int p = 1; p <= (int)ViewBag.TotalPages; p++)
+            {
+                var active = (int)ViewBag.Page == p ? "active" : "";
+                <li class="page-item @active">
+                    <a class="page-link"
+                       href="@Url.Action("Index", new { q = ViewBag.Query, category = ViewBag.Category, page = p })">@p</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
